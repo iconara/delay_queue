@@ -12,6 +12,26 @@ describe DelayQueue do
     @clock = Clock.new
     @q = DelayQueue.new(@clock)
   end
+
+  describe '#put' do
+    it 'does not replace elements whose timestamp has been updated to an earlier time (by default)' do
+      @clock.now = 4
+      @q.put('blopp', 5)
+      @q.put('blipp', 4)
+      @q.put('blupp', 3)
+      @q.put('blopp', 1)
+      @q.pop.should == 'blupp'
+    end
+    
+    it 'does not replace elements whose timestamp has been updated to an earlier time unless specifically asked to' do
+      @clock.now = 4
+      @q.put('blopp', 5)
+      @q.put('blipp', 4)
+      @q.put('blupp', 3)
+      @q.put('blopp', 1, :force => true)
+      @q.pop.should == 'blopp'
+    end
+  end
   
   describe '#pop' do
     it 'returns nil if no elements have expired' do
@@ -50,15 +70,6 @@ describe DelayQueue do
       @q.put('blupp', 3)
       @q.put('blipp', 10)
       @q.pop(2).should == %w(blupp)
-    end
-
-    it 'returns elements whose timestamp has been updated to an earlier time' do
-      @clock.now = 4
-      @q.put('blopp', 5)
-      @q.put('blipp', 4)
-      @q.put('blupp', 3)
-      @q.put('blopp', 1)
-      @q.pop.should == 'blopp'
     end
   end
 end

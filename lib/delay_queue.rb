@@ -11,8 +11,9 @@ class DelayQueue
     @reverse_elements = Hash.new { |h, k| h[k] = Set.new }
   end
   
-  def put(element, timestamp=Time.now.to_i)
+  def put(element, timestamp=Time.now.to_i, options={})
     if @elements[element]
+      return unless options[:force] || timestamp > @elements[element]
       remove(element)
     end
     @elements[element] = timestamp
