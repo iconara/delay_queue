@@ -31,14 +31,23 @@ class DelayQueue
   end
   
   def pop(n=1)
-    now = @clock.now.to_i
-    expired_timestamps = @timestamps.take_while { |ts| ts <= now }
-    expired_elements = expired_timestamps.flat_map { |ts| @reverse_elements[ts].to_a }
-    elements = expired_elements.take(n).tap { |e| remove(e) }
+    elements = peek_all.take(n).tap { |e| remove(e) }
     if n == 1
       elements.first
     else
       elements
     end
+  end
+  
+  def pop_all
+    peek_all.tap { |e| remove(e) }
+  end
+  
+private
+  
+  def peek_all
+    now = @clock.now.to_i
+    expired_timestamps = @timestamps.take_while { |ts| ts <= now }
+    expired_timestamps.flat_map { |ts| @reverse_elements[ts].to_a }
   end
 end

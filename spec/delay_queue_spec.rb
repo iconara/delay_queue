@@ -72,4 +72,15 @@ describe DelayQueue do
       @q.pop(2).should == %w(blupp)
     end
   end
+  
+  describe '#pop_all' do
+    it 'returns all expired elements' do
+      @clock.now = 3
+      @q.put('blopp', 1)
+      @q.put('blipp', 2)
+      @q.put('blupp', 3)
+      @q.put('blepp', 4)
+      @q.pop_all.should == %w(blopp blipp blupp)
+    end
+  end
 end
