@@ -83,4 +83,15 @@ describe DelayQueue do
       @q.pop_all.should == %w(blopp blipp blupp)
     end
   end
+  
+  describe '#include?' do
+    it 'returns true if the element is in the queue' do
+      @q.put('x', 3)
+      @q.should include('x')
+    end
+
+    it 'returns false if the element is not in the queue' do
+      @q.should_not include('x')
+    end
+  end
 end

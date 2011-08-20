@@ -43,6 +43,10 @@ class DelayQueue
     peek_all.tap { |e| remove(e) }
   end
   
+  def include?(element)
+    @elements.key?(element)
+  end
+  
 private
   
   def peek_all
