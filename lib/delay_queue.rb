@@ -23,6 +23,7 @@ class DelayQueue
   
   def remove(element)
     timestamp = @elements.delete(element)
+    return unless timestamp
     @reverse_elements[timestamp].delete(element)
     if @reverse_elements[timestamp].empty?
       @reverse_elements.delete(timestamp)
