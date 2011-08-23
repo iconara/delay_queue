@@ -48,6 +48,10 @@ class DelayQueue
     @elements.key?(element)
   end
   
+  def to_h
+    @elements
+  end
+
 private
   
   def peek_all
