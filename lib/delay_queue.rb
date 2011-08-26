@@ -49,7 +49,7 @@ class DelayQueue
   end
   
   def to_h
-    @elements
+    @elements.dup
   end
 
 private
