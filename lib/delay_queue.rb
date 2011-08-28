@@ -32,7 +32,8 @@ class DelayQueue
   end
   
   def pop(n=1)
-    elements = peek_all.take(n).tap { |e| remove(e) }
+    elements = peek_all.take(n)
+    elements.each { |e| remove(e) }
     if n == 1
       elements.first
     else
@@ -41,7 +42,9 @@ class DelayQueue
   end
   
   def pop_all
-    peek_all.tap { |e| remove(e) }
+    elements = peek_all
+    elements.each { |e| remove(e) }
+    elements
   end
   
   def include?(element)

@@ -46,6 +46,13 @@ describe DelayQueue do
       @q.put('blipp', 3)
       @q.pop.should == 'blipp'
     end
+    
+    it 'removes elements' do
+      @clock.now = 5
+      @q.put('blopp', 4)
+      @q.pop
+      @q.pop.should be_nil
+    end
 
     it 'returns as many expired elements as you want, in age order' do
       @clock.now = 5
@@ -81,6 +88,19 @@ describe DelayQueue do
       @q.put('blupp', 3)
       @q.put('blepp', 4)
       @q.pop_all.should == %w(blopp blipp blupp)
+    end
+    
+    it 'removes elements' do
+      @clock.now = 3
+      @q.put('blopp', 1)
+      @q.put('blipp', 2)
+      @q.put('blupp', 3)
+      @q.put('blepp', 4)
+      @q.pop_all.should == %w(blopp blipp blupp)
+      @q.pop_all.should == []
+      @clock.now = 4
+      @q.pop_all.should == ['blepp']
+      @q.pop_all.should == []
     end
   end
   
