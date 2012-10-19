@@ -6,9 +6,9 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Theo Hultberg']
   s.email       = ['theo@burtcorp.com']
-  s.homepage    = ''
-  s.summary     = ''
-  s.description = ''
+  s.homepage    = 'https://github.com/iconara/delay_queue'
+  s.summary     = 'A TTL based priority queue'
+  s.description = 'Delay queue keeps it\'s elements ordered by a timestamp, popping off the items with the lowest timestamp first'
 
   s.rubyforge_project = 'delay_queue'
   
