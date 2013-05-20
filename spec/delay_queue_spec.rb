@@ -114,4 +114,33 @@ describe DelayQueue do
       @q.should_not include('x')
     end
   end
+
+  describe '#each' do
+    before do
+      @q.put('blopp', 5)
+      @q.put('blipp', 4)
+      @q.put('blupp', 3)
+      @q.put('blipp', 10)
+    end
+
+    it 'yields each session_id and timestamp in timestamp order' do
+      yielded_elements = []
+      @q.each { |*pair| yielded_elements << pair }
+      yielded_elements.should == [['blupp', 3], ['blopp', 5], ['blipp', 10]]
+    end
+
+    it 'returns an enumerator when called without a block' do
+      @q.each.should be_a(Enumerator)
+    end
+  end
+
+  context 'as an Enumerable' do
+    it 'can be mapped over' do
+      @q.put('blopp', 5)
+      @q.put('blipp', 4)
+      @q.put('blupp', 3)
+      @q.put('blipp', 10)
+      @q.map { |e, ts| e }.should == %w[blupp blopp blipp]
+    end
+  end
 end

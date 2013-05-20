@@ -4,6 +4,8 @@ if RUBY_PLATFORM == 'java'
   require 'java'
 
   class DelayQueue
+    include Enumerable
+
     java_import 'java.util.TreeMap'
     java_import 'java.util.HashSet'
 
@@ -74,7 +76,16 @@ if RUBY_PLATFORM == 'java'
       end
       popped_elements
     end
-    
+
+    def each
+      return to_enum unless block_given?
+      @timestamp_to_elements.each do |ts, elements|
+        elements.each do |element|
+          yield element, ts
+        end
+      end
+    end
+
     def include?(element)
       @element_to_timestamp.key?(element)
     end
@@ -91,6 +102,8 @@ else
   require 'set'
 
   class DelayQueue
+    include Enumerable
+
     def initialize(clock=Time)
       @clock = clock
       @elements = {}
@@ -133,7 +146,16 @@ else
       elements.each { |e| remove(e) }
       elements
     end
-    
+
+    def each
+      return to_enum unless block_given?
+      @timestamps.each do |ts|
+        @reverse_elements[ts].each do |element|
+          yield element, ts
+        end
+      end
+    end
+
     def include?(element)
       @elements.key?(element)
     end
